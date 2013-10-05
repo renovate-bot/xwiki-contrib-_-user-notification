@@ -114,7 +114,7 @@ public class DefaultUserNotificationConfiguration implements UserNotificationCon
     @Override
     public boolean isUserCreationEnabled()
     {
-        return getBoolean("usercreation.enabled", true);
+        return getBoolean("usercreation.enabled", false);
     }
 
     @Override
