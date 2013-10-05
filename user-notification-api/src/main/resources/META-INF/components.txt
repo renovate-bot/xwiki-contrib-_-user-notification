@@ -1,0 +1,3 @@
+org.xwiki.contrib.user.notification.internal.DefaultUserNotificationConfiguration
+org.xwiki.contrib.user.notification.internal.DefaultUserNotificationNotifier
+org.xwiki.contrib.user.notification.internal.UserCreatedListener
