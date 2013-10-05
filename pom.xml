@@ -32,7 +32,7 @@
 
   <groupId>org.xwiki.contrib</groupId>
   <artifactId>user-notification</artifactId>
-  <name>User notification API</name>
+  <name>User notification parent</name>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Various users related notifications</description>
@@ -54,7 +54,7 @@
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/user-notification.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/user-notification.git</developerConnection>
-    <url>https://github.com/xwiki-contrib/user-notification-jdbc</url>
+    <url>https://github.com/xwiki-contrib/user-notification</url>
     <tag>HEAD</tag>
   </scm>
   <distributionManagement>
