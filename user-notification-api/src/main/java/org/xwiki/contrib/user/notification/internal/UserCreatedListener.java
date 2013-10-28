@@ -85,10 +85,14 @@ public class UserCreatedListener implements EventListener
     @Override
     public void onEvent(Event event, Object source, Object data)
     {
+        this.logger.debug("Received event [{}] for document [{}]", event, source);
+
         XWikiDocument userDoc = (XWikiDocument) source;
         XWikiContext xcontext = (XWikiContext) data;
 
         if (this.configuration.isUserCreationEnabled()) {
+            this.logger.debug("User creation notification is enabled");
+
             String mail = userDoc.getStringValue("email");
 
             if (StringUtils.isNotEmpty(mail)) {
@@ -98,6 +102,8 @@ public class UserCreatedListener implements EventListener
                 parameters.put("user_password", getRequestPassword());
 
                 DocumentReference template = this.configuration.getUserCreationTemplate();
+
+                this.logger.debug("Sendind user creation mail to [{}]", mail);
 
                 try {
                     this.notifier.send(template, mail, parameters);
