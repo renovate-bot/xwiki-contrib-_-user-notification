@@ -41,7 +41,7 @@ import com.xpn.xwiki.objects.BaseProperty;
 public class DefaultUserNotificationConfiguration implements UserNotificationConfiguration
 {
     private static final LocalDocumentReference CONFURATION_REFERENCE = new LocalDocumentReference("XWiki",
-        "UserNotificationConfiguration");
+        "UserNotificationAdmin");
 
     private static final LocalDocumentReference CONFURATION_CLASS = new LocalDocumentReference("XWiki",
         "UserNotificationConfigurationClass");
