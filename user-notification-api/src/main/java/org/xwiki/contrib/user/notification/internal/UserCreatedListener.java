@@ -28,6 +28,8 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
+import javax.inject.Singleton;
+import javax.mail.MessagingException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -39,24 +41,24 @@ import org.xwiki.observation.EventListener;
 import org.xwiki.observation.event.Event;
 
 import com.xpn.xwiki.XWikiContext;
-import com.xpn.xwiki.XWikiException;
 import com.xpn.xwiki.doc.XWikiDocument;
 import com.xpn.xwiki.internal.event.XObjectAddedEvent;
 
 @Component
 @Named("org.xwiki.contrib.user.notification.internal.UserCreatedListener")
+@Singleton
 public class UserCreatedListener implements EventListener
 {
     /**
      * The reference to match class XWiki.XWikiUsers on main wiki.
      */
-    private static final RegexEntityReference USERSCLASS_REFERENCE = new RegexEntityReference(
-        Pattern.compile("[^:]*:XWiki.XWikiUsers\\[\\d*\\]"), EntityType.OBJECT);
+    private static final RegexEntityReference USERSCLASS_REFERENCE =
+        new RegexEntityReference(Pattern.compile("[^:]*:XWiki.XWikiUsers\\[\\d*\\]"), EntityType.OBJECT);
 
     /**
      * The matched events.
      */
-    private static final List<Event> EVENTS = Arrays.<Event> asList(new XObjectAddedEvent(USERSCLASS_REFERENCE));
+    private static final List<Event> EVENTS = Arrays.<Event>asList(new XObjectAddedEvent(USERSCLASS_REFERENCE));
 
     @Inject
     private Logger logger;
@@ -96,7 +98,7 @@ public class UserCreatedListener implements EventListener
             String mail = userDoc.getStringValue("email");
 
             if (StringUtils.isNotEmpty(mail)) {
-                Map<String, Object> parameters = new HashMap<String, Object>();
+                Map<String, Object> parameters = new HashMap<>();
 
                 parameters.put("user_document", userDoc.newDocument(xcontext));
                 parameters.put("user_password", getRequestPassword());
@@ -107,7 +109,7 @@ public class UserCreatedListener implements EventListener
 
                 try {
                     this.notifier.send(template, mail, parameters);
-                } catch (XWikiException e) {
+                } catch (MessagingException e) {
                     this.logger.error("Faled to send notification of created user to [{}]", mail, e);
                 }
             }

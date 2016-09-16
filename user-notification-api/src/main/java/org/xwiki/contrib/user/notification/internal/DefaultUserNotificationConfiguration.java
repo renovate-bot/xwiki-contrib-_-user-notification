@@ -108,7 +108,7 @@ public class DefaultUserNotificationConfiguration implements UserNotificationCon
             value = (String) property.getValue();
         }
 
-        return def;
+        return value;
     }
 
     @Override

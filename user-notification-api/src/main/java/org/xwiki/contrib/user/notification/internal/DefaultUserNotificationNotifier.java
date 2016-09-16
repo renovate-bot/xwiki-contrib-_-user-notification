@@ -19,48 +19,63 @@
  */
 package org.xwiki.contrib.user.notification.internal;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
+import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 
 import org.xwiki.component.annotation.Component;
+import org.xwiki.mail.MailListener;
+import org.xwiki.mail.MailSender;
+import org.xwiki.mail.MailSenderConfiguration;
+import org.xwiki.mail.MimeMessageFactory;
+import org.xwiki.mail.XWikiAuthenticator;
 import org.xwiki.model.reference.DocumentReference;
-import org.xwiki.model.reference.EntityReferenceSerializer;
-
-import com.xpn.xwiki.XWikiContext;
-import com.xpn.xwiki.XWikiException;
-import com.xpn.xwiki.plugin.mailsender.MailSenderPlugin;
 
 @Component
 @Singleton
 public class DefaultUserNotificationNotifier implements UserNotificationNotifier
 {
     @Inject
-    private Provider<XWikiContext> xcontextProvider;
+    @Named("template")
+    private MimeMessageFactory<MimeMessage> messageFactory;
 
     @Inject
-    private EntityReferenceSerializer<String> serializer;
+    private MailSender mailSender;
+
+    @Inject
+    @Named("database")
+    private MailListener databaseMailListener;
+
+    @Inject
+    private MailSenderConfiguration configuration;
 
     @Override
-    public void send(DocumentReference template, String mail, Map<String, Object> parameters) throws XWikiException
+    public void send(DocumentReference template, String mail, Map<String, Object> inputParameters)
+        throws MessagingException
     {
-        XWikiContext xcontext = this.xcontextProvider.get();
-
-        // Get mailsenderplugin
-        MailSenderPlugin emailService = (MailSenderPlugin) xcontext.getWiki().getPlugin(MailSenderPlugin.ID, xcontext);
-        if (emailService == null) {
-            return;
+        // Create session
+        Session session;
+        if (this.configuration.usesAuthentication()) {
+            session =
+                Session.getInstance(this.configuration.getAllProperties(), new XWikiAuthenticator(this.configuration));
+        } else {
+            session = Session.getInstance(this.configuration.getAllProperties());
         }
 
-        // Get wiki administrator email (default : mailer@xwiki.localdomain.com)
-        String sender = xcontext.getWiki().getXWikiPreference("admin_email", "mailer@xwiki.localdomain.com", xcontext);
+        // Create the message
+        Map<String, Object> parameters = new HashMap<>(inputParameters);
+        // Enable attachments
+        parameters.put("includeTemplateAttachments", true);
+        MimeMessage message = this.messageFactory.createMessage(template, parameters);
 
-        String language = xcontext.getWiki().getLanguagePreference(xcontext);
-
-        // Send message from template
-        emailService.sendMailFromTemplate(this.serializer.serialize(template), sender, mail, null, null, language,
-            parameters, xcontext);
+        // Send mail asynchronously
+        this.mailSender.sendAsynchronously(Arrays.asList(message), session, this.databaseMailListener);
     }
 }

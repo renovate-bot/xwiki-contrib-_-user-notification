@@ -21,13 +21,13 @@ package org.xwiki.contrib.user.notification.internal;
 
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.xwiki.component.annotation.Role;
 import org.xwiki.model.reference.DocumentReference;
-
-import com.xpn.xwiki.XWikiException;
 
 @Role
 public interface UserNotificationNotifier
 {
-    void send(DocumentReference template, String mail, Map<String, Object> parameters) throws XWikiException;
+    void send(DocumentReference template, String mail, Map<String, Object> parameters) throws MessagingException;
 }
