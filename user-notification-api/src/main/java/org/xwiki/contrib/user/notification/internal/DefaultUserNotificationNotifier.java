@@ -26,10 +26,13 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
 import org.xwiki.component.annotation.Component;
 import org.xwiki.mail.MailListener;
 import org.xwiki.mail.MailSender;
@@ -56,6 +59,9 @@ public class DefaultUserNotificationNotifier implements UserNotificationNotifier
     @Inject
     private MailSenderConfiguration configuration;
 
+    @Inject
+    private Logger logger;
+
     @Override
     public void send(DocumentReference template, String mail, Map<String, Object> inputParameters)
         throws MessagingException
@@ -75,7 +81,11 @@ public class DefaultUserNotificationNotifier implements UserNotificationNotifier
         parameters.put("includeTemplateAttachments", true);
         MimeMessage message = this.messageFactory.createMessage(template, parameters);
 
+        message.addRecipient(RecipientType.TO, new InternetAddress(mail));
+
         // Send mail asynchronously
         this.mailSender.sendAsynchronously(Arrays.asList(message), session, this.databaseMailListener);
+
+        this.logger.debug("Mail sent to {}", mail);
     }
 }
