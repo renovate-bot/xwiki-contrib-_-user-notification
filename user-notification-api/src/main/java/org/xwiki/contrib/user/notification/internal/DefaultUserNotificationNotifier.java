@@ -42,10 +42,15 @@ import org.xwiki.mail.MimeMessageFactory;
 import org.xwiki.mail.XWikiAuthenticator;
 import org.xwiki.model.reference.DocumentReference;
 
+import com.xpn.xwiki.XWikiContext;
+
 @Component
 @Singleton
 public class DefaultUserNotificationNotifier implements UserNotificationNotifier
 {
+    @Inject
+    private Provider<XWikiContext> xcontextProvider;
+
     @Inject
     @Named("template")
     private MimeMessageFactory<MimeMessage> messageFactory;
@@ -78,9 +83,14 @@ public class DefaultUserNotificationNotifier implements UserNotificationNotifier
         }
 
         // Create the message
-        Map<String, Object> parameters = new HashMap<>(inputParameters);
+        Map<String, Object> parameters = new HashMap<>();
         // Enable attachments
         parameters.put("includeTemplateAttachments", true);
+        // Set variable accessible in the template
+        parameters.put("velocityVariables", inputParameters);
+        // Set language
+        XWikiContext xcontext = this.xcontextProvider.get();
+        parameters.put("language", xcontext.getWiki().getLanguagePreference(xcontext));
         MimeMessage message = this.messageFactory.createMessage(template, parameters);
 
         message.addRecipient(RecipientType.TO, new InternetAddress(mail));
