@@ -25,6 +25,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
@@ -54,7 +55,8 @@ public class DefaultUserNotificationNotifier implements UserNotificationNotifier
 
     @Inject
     @Named("database")
-    private MailListener databaseMailListener;
+    // TODO: remove Provider when is fixed http://jira.xwiki.org/browse/XWIKI-13720
+    private Provider<MailListener> databaseMailListenerProvider;
 
     @Inject
     private MailSenderConfiguration configuration;
@@ -84,7 +86,7 @@ public class DefaultUserNotificationNotifier implements UserNotificationNotifier
         message.addRecipient(RecipientType.TO, new InternetAddress(mail));
 
         // Send mail asynchronously
-        this.mailSender.sendAsynchronously(Arrays.asList(message), session, this.databaseMailListener);
+        this.mailSender.sendAsynchronously(Arrays.asList(message), session, this.databaseMailListenerProvider.get());
 
         this.logger.debug("Mail sent to {}", mail);
     }
