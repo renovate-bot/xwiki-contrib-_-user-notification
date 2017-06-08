@@ -27,7 +27,7 @@
   <parent>
     <groupId>org.xwiki.contrib</groupId>
     <artifactId>parent-platform</artifactId>
-    <version>7.4-8</version>
+    <version>7.4-13</version>
   </parent>
 
   <artifactId>user-notification</artifactId>
@@ -35,6 +35,11 @@
   <version>1.3.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Various users related notifications</description>
+
+  <properties>
+    <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
+    <xwiki.issueManagement.jira.id>USERNOTIF</xwiki.issueManagement.jira.id>
+  </properties>
 
   <modules>
     <module>user-notification-api</module>
@@ -56,9 +61,4 @@
     <url>https://github.com/xwiki-contrib/user-notification</url>
     <tag>HEAD</tag>
   </scm>
-
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.xwiki.org/jira/browse/USERNOTIF</url>
- </issueManagement>
 </project>
