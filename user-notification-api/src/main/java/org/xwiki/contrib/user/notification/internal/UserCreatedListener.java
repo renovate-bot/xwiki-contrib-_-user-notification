@@ -53,7 +53,7 @@ public class UserCreatedListener implements EventListener
      * The reference to match class XWiki.XWikiUsers on main wiki.
      */
     private static final RegexEntityReference USERSCLASS_REFERENCE =
-        new RegexEntityReference(Pattern.compile("[^:]*:XWiki.XWikiUsers\\[\\d*\\]"), EntityType.OBJECT);
+        new RegexEntityReference(Pattern.compile("([^:]*:)?XWiki.XWikiUsers\\[\\d*\\]"), EntityType.OBJECT);
 
     /**
      * The matched events.
