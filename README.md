@@ -1,11 +1,18 @@
-User notifications
-=================
+# User notifications
 
 The goal is to generate various notification related to wiki user life.
 
-Currently supported notifications:
+# Release Notes Application
 
-User created
-------------
-
-When a user is created a configurable mail is sent to him. It can be useful to put general information about the wiki, company, association, etc. and explain what the user should do next. The chosen password is also passed to the mail template.
+* Project Lead: [Thomas Mortagne](http://www.xwiki.org/xwiki/bin/view/XWiki/ThomasMortagne)
+* [Documentation & Download](http://extensions.xwiki.org/xwiki/bin/view/Extension/User+notification+Application)
+* [Issue Tracker](https://jira.xwiki.org/browse/USERNOTIF)
+* Communication: [Mailing List](http://dev.xwiki.org/xwiki/bin/view/Community/MailingLists), [IRC](http://dev.xwiki.org/xwiki/bin/view/Community/IRC)
+* [Development Practices](http://dev.xwiki.org)
+* Minimal XWiki version supported: XWiki 7.4
+* License: LGPL 2.1
+* Translations: N/A
+* Sonar Dashboard: N/A
+* Continuous Integration Status: [![Build Status](http://ci.xwiki.org/job/XWiki%20Contrib/job/user-notification
+/job/master/badge/icon)](http://ci.xwiki.org/job/XWiki%20Contrib/job/user-notification
+/job/master/)
