@@ -31,7 +31,7 @@
   </parent>
 
   <artifactId>user-notification-ui</artifactId>
-  <name>User notification UI</name>
+  <name>User notification Application</name>
   <packaging>xar</packaging>
   <description>Various users related notifications</description>
 
