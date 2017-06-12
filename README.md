@@ -13,6 +13,4 @@ The goal is to generate various notification related to wiki user life.
 * License: LGPL 2.1
 * Translations: N/A
 * Sonar Dashboard: N/A
-* Continuous Integration Status: [![Build Status](http://ci.xwiki.org/job/XWiki%20Contrib/job/user-notification
-/job/master/badge/icon)](http://ci.xwiki.org/job/XWiki%20Contrib/job/user-notification
-/job/master/)
+* Continuous Integration Status: [![Build Status](http://ci.xwiki.org/job/XWiki%20Contrib/job/user-notification/job/master/badge/icon)](http://ci.xwiki.org/job/XWiki%20Contrib/job/user-notification/job/master/)
